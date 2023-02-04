@@ -17,12 +17,13 @@ yarn run typechain
 ```
 
 5. Setup telegram bot for notifications
-   a) obtain token from @BotFather user on telegram by opening chat with him, writing /newbot and setting up name etc.
-   b) copy token from chat into .env file under TELEGRAM_KEY=
-   c) Google how to get chat id OR start app by `yarn run monit`, enter into chat with your bot from BotFather chat and write something. You should recieve a message with the chatId. Quit script.
-   d) set chatId in .env under TELEGRAM_CHAT_ID=
 
-6. Run monitor
+   1. obtain token from @BotFather user on telegram by opening chat with him, writing /newbot and setting up name etc.
+   2. copy token from chat into .env file under TELEGRAM_KEY=
+   3. Google how to get chat id OR start app by `yarn run monit`, enter into chat with your bot from BotFather chat and write something. You should recieve a message with the chatId. Quit script.
+   4. set chatId in .env under TELEGRAM_CHAT_ID=
+
+6. Run monitor. At the moment only a single fail message will be sent to telegram (and one success message if it starts up again).
 
 ```bash
 yarn run monit
