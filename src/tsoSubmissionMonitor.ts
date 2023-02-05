@@ -27,6 +27,7 @@ export const monitorTsoSubmissions = async (config: TsoSubmissionConfig) => {
   );
 
   const epochLength = 3 * 60 * 1000;
+  const errorMargin = 15 * 1000;
 
   let lastReveal = new Date().getTime();
   let lastSubmission = new Date().getTime();
@@ -50,7 +51,7 @@ export const monitorTsoSubmissions = async (config: TsoSubmissionConfig) => {
   let consecutiveFailedRevealCount = 0;
 
   while (true) {
-    if (lastReveal + epochLength < new Date().getTime()) {
+    if (lastReveal + epochLength + errorMargin < new Date().getTime()) {
       consecutiveFailedRevealCount += 1;
     } else {
       if (consecutiveFailedRevealCount >= config.revealFailuresBeforeNotified) {
@@ -59,7 +60,7 @@ export const monitorTsoSubmissions = async (config: TsoSubmissionConfig) => {
       }
       consecutiveFailedRevealCount = 0;
     }
-    if (lastSubmission + epochLength < new Date().getTime()) {
+    if (lastSubmission + epochLength + errorMargin < new Date().getTime()) {
       consecutiveFailedSubmissionCount += 1;
     } else {
       if (
@@ -72,14 +73,16 @@ export const monitorTsoSubmissions = async (config: TsoSubmissionConfig) => {
     }
 
     if (
-      consecutiveFailedSubmissionCount >= config.submitFailuresBeforeNotified
+      consecutiveFailedSubmissionCount >= config.submitFailuresBeforeNotified &&
+      !submitFailureMessageSent
     ) {
       sendMessageToTelegramBot(`${config.tsoAlias}  submit failure`);
       submitFailureMessageSent = true;
     }
 
     if (
-      consecutiveFailedSubmissionCount >= config.revealFailuresBeforeNotified
+      consecutiveFailedSubmissionCount >= config.revealFailuresBeforeNotified &&
+      !revealFailureMessageSent
     ) {
       sendMessageToTelegramBot(`${config.tsoAlias} reveal failure`);
       revealFailureMessageSent = true;
