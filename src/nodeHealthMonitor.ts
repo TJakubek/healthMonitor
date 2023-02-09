@@ -37,6 +37,9 @@ export const monitorNodeHealth = async (config: NodeHealthConfig) => {
     ) {
       sendMessageToTelegramBot(`${config.nodeAlias} health failure`);
       failureMessageSent = true;
+      if (config.callback) {
+        config.callback();
+      }
     }
     await sleep(config.interval * 1000);
   }

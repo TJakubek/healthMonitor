@@ -3,6 +3,7 @@ export type NodeHealthConfig = {
   interval: number; // seconds between querying
   nodeAlias: string; // alias identifying node
   failuresBeforeNotified: number; // number of unhealthy calls before notification sent
+  callback?: Function; // optional callback if you want something triggered on failure other than telegram message
 };
 
 export const nodeHealthConfig: NodeHealthConfig[] = [];
@@ -14,6 +15,8 @@ export type TsoSubmissionConfig = {
   tsoAlias: string; // alias identifying TSO
   submitFailuresBeforeNotified: number; // number of unhealthy submits before notification sent
   revealFailuresBeforeNotified: number; // number of unhealthy reveals before notification sent
+  submitCallback?: Function; // optional callback if you want something triggered on failure other than telegram message
+  revealCallback?: Function; // optional callback if you want something triggered on failure other than telegram message
 };
 
 export const tsoSubmissionConfig: TsoSubmissionConfig[] = [];

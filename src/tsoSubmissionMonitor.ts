@@ -78,6 +78,9 @@ export const monitorTsoSubmissions = async (config: TsoSubmissionConfig) => {
     ) {
       sendMessageToTelegramBot(`${config.tsoAlias}  submit failure`);
       submitFailureMessageSent = true;
+      if (config.submitCallback) {
+        config.submitCallback();
+      }
     }
 
     if (
@@ -86,6 +89,9 @@ export const monitorTsoSubmissions = async (config: TsoSubmissionConfig) => {
     ) {
       sendMessageToTelegramBot(`${config.tsoAlias} reveal failure`);
       revealFailureMessageSent = true;
+      if (config.revealCallback) {
+        config.revealCallback();
+      }
     }
     await sleep(epochLength);
   }
